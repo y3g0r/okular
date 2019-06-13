@@ -1663,7 +1663,7 @@ void PageView::paintEvent(QPaintEvent *pe)
         int pageAboveLeft = 0,
             pageAboveRight = viewportWidth,
             pageAboveTop = (nViewportsAbove + 1) * viewportHeight,
-            pageAboveBottom = areaPos.y() + pageAboveTop;
+            pageAboveBottom = areaPos.y() % viewportHeight + pageAboveTop;
         contentsRect.setCoords(pageAboveLeft, pageAboveTop, pageAboveRight, pageAboveBottom);
         dx = -areaPos.x();
         dy = -pageAboveTop;
