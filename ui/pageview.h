@@ -165,6 +165,7 @@ Q_OBJECT
     private:
         // draw background and items on the opened qpainter
         void drawDocumentOnPainter( const QRect & pageViewRect, QPainter * p );
+        void drawContentsRectInViewport(const QPaintEvent *pe, const QPoint &areaPos, const QRect &viewportRect, QRect &contentsRect, int dx, int dy);
         // update item width and height using current zoom parameters
         void updateItemSize( PageViewItem * item, int columnWidth, int rowHeight );
         // return the widget placed on a certain point or 0 if clicking on empty space
