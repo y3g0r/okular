@@ -3560,15 +3560,18 @@ void PageView::drawDocumentOnPainter( const QRect & contentsRect, QPainter * p )
         // move the painter to the top-left corner of the real page
         p->save();
         p->translate( itemGeometry.left(), itemGeometry.top() );
+        int contentsRectHeight = contentsRect.translated(-itemGeometry.left(), -itemGeometry.top()).top() + contentsRect.height();
+        
 
         // draw the page outline (black border and 2px bottom-right shadow)
         if ( !itemGeometry.contains( contentsRect ) )
         {
             int itemWidth = itemGeometry.width(),
-                itemHeight = itemGeometry.height();
+                itemHeight = itemGeometry.height(),
+                bottom = qMin(itemHeight + 1, contentsRectHeight + 1);
             // draw simple outline
             p->setPen( Qt::black );
-            p->drawRect( -1, -1, itemWidth + 1, itemHeight + 1 );
+            p->drawRect( -1, -1, itemWidth + 1, bottom );
             // draw bottom/right gradient
             static const int levels = 2;
             int r = backColor.red() / (levels + 2) + 6,
@@ -3577,10 +3580,10 @@ void PageView::drawDocumentOnPainter( const QRect & contentsRect, QPainter * p )
             for ( int i = 0; i < levels; i++ )
             {
                 p->setPen( QColor( r * (i+2), g * (i+2), b * (i+2) ) );
-                p->drawLine( i, i + itemHeight + 1, i + itemWidth + 1, i + itemHeight + 1 );
-                p->drawLine( i + itemWidth + 1, i, i + itemWidth + 1, i + itemHeight );
+                p->drawLine( i, i + bottom, i + itemWidth + 1, i + bottom );  // bottom
+                p->drawLine( i + itemWidth + 1, i, i + itemWidth + 1, i + bottom - 1 ); // right
                 p->setPen( backColor );
-                p->drawLine( -1, i + itemHeight + 1, i - 1, i + itemHeight + 1 );
+                p->drawLine( -1, i + bottom, i - 1, i + bottom );
                 p->drawLine( i + itemWidth + 1, -1, i + itemWidth + 1, i - 1 );
             }
         }
